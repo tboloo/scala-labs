@@ -1,5 +1,6 @@
 package org.scalalabs.basic.lab01
 import scala.language.implicitConversions
+
 /**
  * The goal of this exercise is to get familiar basic OO constructs in scala
  *
@@ -34,6 +35,36 @@ import scala.language.implicitConversions
  * - Create a new currency Dollar
  * - Provide a conversion method that converts from Euro to Dollar
  */
-class Euro {
+ class Euro(val euro:Int, val cents: Int = 0) extends Currency("EUR") with Ordered[Euro] {
+ 	def inCents = euro*100 + cents
+ 	def +(other: Euro) = Euro.fromCents(inCents + other.inCents)
+ 	def *(times: Int) = Euro.fromCents(inCents*times)
+ 	override def toString = cents match {
+ 		case 0 => s"$symbol: $euro,--"
+ 		case _ => f"$symbol: $euro,$cents%02d"
+ 	}
+ 	def compare(that : Euro) : Int = inCents - that.inCents
+ }
 
-}
+ object Euro {
+ 	def fromCents(cents: Int) = new Euro(cents / 100, cents % 100)
+ }
+
+ abstract class Currency(val symbol: String)
+
+ object ImplicitConverter {
+ 	implicit class IntToEuro(val n: Int) extends AnyVal{  
+ 		def *(euro: Euro) = euro * n
+ 	}	
+ }
+
+ class Dollar(val dollars: Int, val cents: Int) extends Currency("USD") with Ordered[Dollar] {
+ 	def inCents = dollars*100 + cents
+ 	def compare(that : Dollar) : Int = inCents - that.inCents
+ }
+
+ object Dollar {
+ 	implicit def toEuro(d: Dollar): Euro = {
+ 		Euro.fromCents(d.inCents / 0.7394366197183099 toInt)
+ 	} 
+ }
