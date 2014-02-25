@@ -3,9 +3,9 @@ package org.scalalabs.basic.lab02
  * This Lab contains exercises where the usage of
  * higher order collection methods can be rehearsed.
  */
-import sys._
+ import sys._
 
-object CollectionExercise01 {
+ object CollectionExercise01 {
 
   /**
    * Taken from: <a href="http://code.google.com/codejam/contest/1460488/dashboard">Problem A. Speaking in Tongues</a>
@@ -32,15 +32,20 @@ object CollectionExercise01 {
    * Case 3: so it is okay if you want to just give up
    *
    */
-  def googleCodeJamGooglerese(lines: String*): Seq[String] = {
-    error("fix me")
+   def googleCodeJamGooglerese(lines: String*): Seq[String] = {
+    val decode = Map(' ' -> ' '  , 'a'-> 'y', 'b' -> 'h', 'c' -> 'e', 'd' -> 's', 'e' -> 'o', 'f' -> 'c', 'g' -> 'v', 'h' -> 'x', 'i' -> 'd', 'j' -> 'u', 'k' -> 'i', 'l' -> 'g', 'm' -> 'l', 'n' -> 'b', 'o' -> 'k', 'p' -> 'r', 'r' -> 't', 's' -> 'n', 't' -> 'w', 'u' -> 'j', 'v' -> 'p', 'w' -> 'f', 'x' -> 'm', 'y' -> 'a')
+    for {
+      l <- lines
+    } yield l map (c => decode(c))
   }
 }
 /*========================================================== */
 
 object CollectionExercise02 {
 
-  class Person(val age: Int, val name: String)
+  class Person(val age: Int, val name: String) {
+    override def toString = s"$name, $age"
+  }
 
   /**
    * Take a look at the java class: {@link ImperativeSample}. The
@@ -49,8 +54,9 @@ object CollectionExercise02 {
    * Rewrite the method groupAdultsPerAgeGroup in the ImperativeSample java class
    * using a functional approach.
    */
-  def groupAdultsPerAgeGroup(persons: Seq[Person]): Map[Int, Seq[Person]] = {
-    error("fix me")
+   def groupAdultsPerAgeGroup(persons: Seq[Person]): Map[Int, Seq[Person]] = {
+    val map = persons filter (_.age >= 20) groupBy (_.age/10*10)
+    scala.collection.immutable.TreeMap(map.toSeq:_*) map (e => (e._1, e._2.sortBy(_.name)))
   }
 }
 
@@ -64,21 +70,25 @@ object CollectionExercise03 {
    * checkValuesIncrease(Seq(1,2,3)) == true
    * checkValuesIncrease(Seq(1,2,2)) == false
    */
-  def checkValuesIncrease[T <% Ordered[T]](seq: Seq[T]): Boolean =
-     error("fix me")
+   def checkValuesIncrease[T <% Ordered[T]](seq: Seq[T]): Boolean = ((seq distinct) sorted) == seq
 
-}
-/*========================================================== */
+ }
+ /*========================================================== */
 
-object CollectionExercise04 {
+ object CollectionExercise04 {
   /**
    * Calculate the length of the longest word in a list of sentences.
    * To keep it simple it's ok to use String.split to extract all words of a sentence.
    */
-  def calcLengthLongestWord(lines: String*): Int = {
-    error("fix me")
+   def calcLengthLongestWord(lines: String*): Int = {
+    val longest = 
+    for { 
+      l <- lines 
+      val top = (l split(' ') map (w => w.length) sorted) last
+      } yield top
+      (longest sorted) last
+    }
   }
-}
 
 
 
