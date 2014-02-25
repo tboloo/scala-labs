@@ -20,7 +20,7 @@ import sys._
  * <a href="http://projecteuler.net/problem=4">Project Euler - Problem 4</a>
  *
  */
-object ForExpressionExercise01 {
+ object ForExpressionExercise01 {
 
    /**
    * Helper method to calculate lowest and highest number based on
@@ -28,7 +28,7 @@ object ForExpressionExercise01 {
    * is returned as a Tuple.
    * E.g. amountOfDigits = 2 -> from = 10, to = 99
    */
-  private def getFromAndTo(amountOfDigits: Int):(Int, Int) = {
+   private def getFromAndTo(amountOfDigits: Int):(Int, Int) = {
     require(amountOfDigits > 1, "amount of digits must be at least 2")
     import Math.pow
     val fromNumber = pow(10, amountOfDigits - 1).toInt
@@ -44,9 +44,15 @@ object ForExpressionExercise01 {
    * @param amountOfDigits amount of digits from which to calculate the largest palindrome
    * @return largest palindrome.
    */
-  def largestPalindromWithForExpression(amountOfDigits: Int): Int = {
-    error("Fix me")
-  }
+   def largestPalindromWithForExpression(amountOfDigits: Int): Int = {
+    val range = getFromAndTo(amountOfDigits)._1 to getFromAndTo(amountOfDigits)._2
+    val palindromes = for {
+      i <- range
+      j <- range
+      val n = i*j if n.toString == n.toString.reverse 
+      } yield n 
+      palindromes.sorted.reverse.head
+    }
 
   /**
    * Calculate the largest palindrome from a n-digit number using higher order functions.
@@ -56,7 +62,12 @@ object ForExpressionExercise01 {
    * @param amountOfDigits amount of digits from which to calculate the largest palindrome
    * @return largest palindrome.
    */
-  def largestPalindromWithHigherOrderFunctions(amountOfDigits: Int): Int = {
-    error("Fix me")
+   def largestPalindromWithHigherOrderFunctions(amountOfDigits: Int): Int = {
+    def palindrome_?(n: Int) = n.toString == n.toString.reverse
+    val n = Math.pow(10, amountOfDigits).toInt - 1
+    (1 to n).flatMap(i =>
+      (1 to i).withFilter(j => palindrome_?(i*j))
+      .map(j => (i * j))).sorted.reverse.head
+
   }
 }

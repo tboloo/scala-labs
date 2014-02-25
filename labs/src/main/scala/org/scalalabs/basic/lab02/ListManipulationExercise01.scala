@@ -48,8 +48,7 @@ object ListManipulationExercise01 {
    *  - ... etc
    */
   def nthElementInList[T](n: Int, l: List[T]): T = {
-    val zipped = l.zipWithIndex
-    zipped(n)._1
+    l.zipWithIndex.apply(n)._1
   }
 
   /**
