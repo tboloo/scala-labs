@@ -12,10 +12,10 @@ package object lab03 {
    * -- the amount of people in the room (filled: Some("10"), empty: None)
    * -- the room is not available (Some("locked"))
    */
-  val sampleRooms = Map(1 -> Some("12"), 2 -> None, 3 -> Some("locked"), 4 -> Some("14"), 5 -> Some("8"), 6 -> Some("locked"))
-}
+   val sampleRooms = Map(1 -> Some("12"), 2 -> None, 3 -> Some("locked"), 4 -> Some("14"), 5 -> Some("8"), 6 -> Some("locked"))
+ }
 
-object OptionExercise01 {
+ object OptionExercise01 {
 
   /**
    * Implement the room state method that should return the state of a room as a String as follows:
@@ -24,8 +24,11 @@ object OptionExercise01 {
    * - empty:  return "empty"	        E.g. None is "empty"
    * - does not exist: 					"not existing"
    */
-  def roomState(rooms: Map[Int, Option[String]], room: Int): String = {
-    error("Fix me")
+   def roomState(rooms: Map[Int, Option[String]], room: Int): String = {
+    rooms getOrElse(room, Some("not existing")) match {
+      case None => "empty"
+      case Some(s) => if (s == "locked") "not available" else s
+    }
   }
 
 }
@@ -36,7 +39,10 @@ object OptionExercise02 {
    * Hint: make use of a for expression and scala.util.control.Exception.allCatch opt (...)
    * to convert a possible numeric String (e.g. Some("12")) to an integer
    */
-  def totalPeopleInRooms(rooms: Map[Int, Option[String]]): Int = {
-    error("Fix me")
+   def totalPeopleInRooms(rooms: Map[Int, Option[String]]): Int = {
+    (for {
+      r <- rooms
+      n <- r._2 if n != "locked"
+    } yield n.toInt).sum
   }
 }
