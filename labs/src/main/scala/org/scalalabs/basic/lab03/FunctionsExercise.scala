@@ -11,13 +11,17 @@ import sys._
  * Use the logPerf method provided.
  * Provide a suitable implementation in order to make the corresponding unittest work.
  */
-object FunctionsExercise01 {
+ object FunctionsExercise01 {
 
   var printed = "" 
   private def logPerf(elapsed: Long) = printed = s"The execution took: $elapsed ms"
 
-  def measure[T](/* provide correct method parameter */): T = {
-    error("fix me")
+  def measure[T](block: => T): T = {
+    val start = System.nanoTime
+    val res = block
+    val elapsed = (System.nanoTime - start) / 1000
+    printed =  s"The execution took: $elapsed ms"
+    res
   }
 
 }
@@ -28,11 +32,13 @@ object FunctionsExercise01 {
  *
  * Provide a suitable implementation in order to make the corresponding unittest work.
  */
-object FunctionsExercise02 {
+ object FunctionsExercise02 {
 
   def plusOne(x: Int): Int = {
     //implement this using a partial function
-    error("fix me")
+    val sum = (a:Int, b:Int) => a + b
+    val inc = sum(_:Int, 1)
+    inc(x)
   }
 
   def plus(x: Int, y: Int): Int = {
@@ -40,6 +46,10 @@ object FunctionsExercise02 {
   }
 
   def using[A <: { def close(): Unit }, B](closable: A)(f: A => B): B = {
-    error("fix me")
+    try { 
+      f(closable)
+      } finally {
+        closable.close
+      }
+    }
   }
-}
