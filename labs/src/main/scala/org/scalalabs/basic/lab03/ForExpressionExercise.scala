@@ -46,12 +46,11 @@ import sys._
    */
    def largestPalindromWithForExpression(amountOfDigits: Int): Int = {
     val range = getFromAndTo(amountOfDigits)._1 to getFromAndTo(amountOfDigits)._2
-    val palindromes = for {
+    (for {
       i <- range
       j <- range
       val n = i*j if n.toString == n.toString.reverse 
-      } yield n 
-      palindromes.sorted.reverse.head
+      } yield n) max 
     }
 
   /**
@@ -67,7 +66,7 @@ import sys._
     val n = Math.pow(10, amountOfDigits).toInt - 1
     (1 to n).flatMap(i =>
       (1 to i).withFilter(j => palindrome_?(i*j))
-      .map(j => (i * j))).sorted.reverse.head
+      .map(j => (i * j))) max
 
   }
 }
