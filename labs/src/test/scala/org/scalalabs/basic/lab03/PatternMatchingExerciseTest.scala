@@ -3,12 +3,12 @@ package org.scalalabs.basic.lab03
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import PatternMatchingExercise._ 
+import PatternMatchingExerciseBasic._ 
 /**
  * @see PatternMatchingExercise
  */
 @RunWith(classOf[JUnitRunner])
-class PatternMatchingExerciseTest extends Specification {
+class PatternMatchingExerciseBasicTest extends Specification {
 
   "PatternMatchingExercise" should {
     "match language on strings" in {
