@@ -30,6 +30,7 @@ class TwitterStatus(s: Node) {
 		} catch {
 			case e: NumberFormatException => None
 		}
+	def user = TwitterUser( s \ "user")
 }
 
 object TwitterStatus {

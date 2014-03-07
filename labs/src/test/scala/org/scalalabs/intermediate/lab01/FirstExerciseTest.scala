@@ -53,7 +53,7 @@ import org.junit.Test
      expect(false) {firstTweet.truncated}
      expect (false) {firstTweet.favorited}
 
-     expect("Having much more fun working on #jaoo talks than  yesterday's hard drive crash redddddddcovery.") {
+     expect("Having much more fun working on #jaoo talks than  yesterday's hard drive crash recovery.") {
        firstTweet.text
      }                                                    
 
@@ -64,20 +64,17 @@ import org.junit.Test
 
    @Test
    def testAttributesOfUserAssociatedWithFirstTweet() {
-    fail("uncomment and fix!")
-      //TODO uncomment these tests and assertions
-//	    val firstTweetUser: TwitterUser = getListOfTweets()(0).user
-//
-//	    expect(16665197L) {firstTweetUser.id}
-//      expect("Martin Fowler") {firstTweetUser.name}
-//	    expect("martinfowler")   {firstTweetUser.screen_name}
-//	    expect("Loud Mouth, ThoughtWorks") {firstTweetUser.description}
-//	    expect("Boston") {firstTweetUser.location}
-//	    expect("http://www.martinfowler.com/") {firstTweetUser.url}
-//	    expect("http://a3.twimg.com/profile_images/79787739/mf-tg-sq_normal.jpg") {firstTweetUser.profileImageUrl}
-//	    expect(787) {firstTweetUser.statusesCount}
-//	    expect(166) {firstTweetUser.friendsCount}
-//	    expect(8735) {firstTweetUser.followersCount}
-}
+    val firstTweetUser: TwitterUser = getListOfTweets()(0).user
+    expect(16665197L) {firstTweetUser.id}
+    expect("Martin Fowler") {firstTweetUser.name}
+    expect("martinfowler")   {firstTweetUser.screen_name}
+    expect("Loud Mouth, ThoughtWorks") {firstTweetUser.description}
+    expect("Boston") {firstTweetUser.location}
+    expect("http://www.martinfowler.com/") {firstTweetUser.url}
+    expect("http://a3.twimg.com/profile_images/79787739/mf-tg-sq_normal.jpg") {firstTweetUser.profileImageUrl}
+    expect(787) {firstTweetUser.statusesCount}
+    expect(166) {firstTweetUser.friendsCount}
+    expect(8735) {firstTweetUser.followersCount}
+  }
 
 }

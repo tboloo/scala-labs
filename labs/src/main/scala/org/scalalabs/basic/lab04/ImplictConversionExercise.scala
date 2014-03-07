@@ -151,7 +151,6 @@ object ImplictConversionExercise04 {
   //   }
   // }
   case class EuroBuilder(val amount: Int, val inCents: Int) {
-    private val stateCents = "cents"
     def euros = new EuroBuilder(0, inCents + amount * 100)
     def cents = new EuroBuilder(0, inCents + amount)
     def apply(amount: Int) = new EuroBuilder(0, inCents + amount)
