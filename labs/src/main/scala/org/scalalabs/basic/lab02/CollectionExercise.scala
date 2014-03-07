@@ -56,8 +56,7 @@ object CollectionExercise02 {
    * using a functional approach.
    */
    def groupAdultsPerAgeGroup(persons: Seq[Person]): Map[Int, Seq[Person]] = {
-    val map = persons filter (_.age >= 20) groupBy (_.age/10*10)
-    scala.collection.immutable.TreeMap(map.toSeq:_*) map (e => (e._1, e._2.sortBy(_.name)))
+    (persons filter (_.age >= 20) groupBy (_.age/10*10)) map (e => (e._1, e._2.sortBy(_.name)))
   }
 }
 

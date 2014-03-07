@@ -23,14 +23,9 @@ import language.higherKinds
  *
  */
 
-object ImplictConversionExercise01 {
+ object ImplictConversionExercise01 {
 
-  def stringToList(s: String): List[Char] = {
-    //built in: our String will be converted to Scala's RichString, because this is defined a Scala
-    //object called Predef. This is imported by the compiler by default.
-    //
-    List[Char]()
-  }
+  def stringToList(s: String): List[Char] = s toList
 
 }
 
@@ -54,14 +49,22 @@ object ImplictConversionExercise02 {
    * Use this conversion helper to convert fahrenheit values to degree celsius values
    * and vice versa in the implicit function you will define.
    */
-  object ConversionHelper {
-    def fahrenheit2CelsiusConversion(fahrenheit: Double) = {
+   object ConversionHelper {
+     def fahrenheit2CelsiusConversion(fahrenheit: Double) = {
       val converted = (fahrenheit - 32) / 1.8
       round(converted * 100).toDouble / 100
     }
 
     def celsius2FahrenheitConversion(degreeCelsius: Double) = {
       degreeCelsius * 1.8 + 32
+    }
+
+    implicit def f2c(f: Fahrenheit): Celsius = {
+      new Celsius(fahrenheit2CelsiusConversion(f.fahrenheit))
+    }
+
+    implicit def c2f(c: Celsius): Fahrenheit = {
+      new Fahrenheit(celsius2FahrenheitConversion(c.degree))
     }
   }
 }
@@ -70,7 +73,12 @@ object ImplictConversionExercise02 {
 // Write here an implict class that adds a camelCase method to string.
 
 object ImplictConversionExercise03 {
-
+  implicit class StringToRichString(val s: String) extends AnyVal{  
+    def camelCase = {
+      val str = s split(' ') map (e => s"${e.head toUpper}${e.tail}") mkString; 
+      str.head.toLower + str.tail
+    }
+  }
 }
 
 /**============================================================================ */
@@ -79,25 +87,28 @@ object ImplictConversionExercise04 {
   object TimeUtils {
     case class DurationBuilder(timeSpan: Long) {
       def now = new DateTime().getMillis()
-
-      //    def seconds = TODO your implementation here...
-
-      //    def minutes = TODO your implementation here...
-
-      //    def hours = TODO your implementation here...
-
-      //    def days = TODO your implementation here...
+      def seconds = (timeSpan - days * (86400L * 1000L) - hours * (3600L * 1000L) - minutes * (60L * 1000L)) / 1000L
+      def minutes = (timeSpan - days * (86400L * 1000L) - hours * (3600L * 1000L)) / (60L * 1000L)
+      def hours = (timeSpan - days * (86400L * 1000L)) / (3600L * 1000L)
+      def days = timeSpan / (86400L * 1000L)
+      def millis = timeSpan
+      def+(that:DurationBuilder) = DurationBuilder(millis + that.millis)
+      override def toString = s"$days days, $hours hours, $minutes minutes, $seconds seconds"
     }
 
     //TODO define some implicits that convert integers and longs to durations and builders to make it all work
 
     def seconds(in: Long) = in * 1000L
-
     def minutes(in: Long) = seconds(in) * 60L
-
     def hours(in: Long) = minutes(in) * 60L
-
     def days(in: Long) = hours(in) * 24L
+
+    implicit class DurationUtils(n: Int) {
+      def seconds = DurationBuilder(n * 1000L)
+      def minutes = DurationBuilder(60L * n * 1000L)
+      def hours = DurationBuilder(60L * 60L * n * 1000L)
+      def days = DurationBuilder(24L * 60L * 60L * n * 1000L)
+    }
   }
 
   case class RichDuration(val duration: Duration) {
@@ -120,11 +131,32 @@ object ImplictConversionExercise04 {
  * In the EuroBuilder you might need the apply() method to cover this case:
  * 2 euros >45< cents
  */
-object ImplictConversionExercise05 {
+ object ImplictConversionExercise05 {
   case class Euro(val euros: Int, val cents: Int) 
   
   object Euro {
     def fromCents(cents: Int) = new Euro(cents / 100, cents % 100)
   }
 
+  // object Conversions{
+  //   case class EuroBuilder(e: Int, c: Int) {
+  //     def apply(n: Int) = EuroBuilder(this.e, n)
+  //     def cents = Euro(this.e, this.c)
+  //     implicit def toEuro(eb: EuroBuilder) = Euro(this.e, this.c)
+  //   }
+
+  //   implicit class Int2EuroBuilder(e: Int) {
+  //     def euros = EuroBuilder(e, 0)
+  //     def cents = Euro.fromCents(e)
+  //   }
+  // }
+  case class EuroBuilder(val amount: Int, val inCents: Int) {
+    private val stateCents = "cents"
+    def euros = new EuroBuilder(0, inCents + amount * 100)
+    def cents = new EuroBuilder(0, inCents + amount)
+    def apply(amount: Int) = new EuroBuilder(0, inCents + amount)
+  }
+
+  implicit def fromEuroBuilder(eb: EuroBuilder):Euro = Euro.fromCents(eb.inCents)
+  implicit def fromInt(value: Int):EuroBuilder= new EuroBuilder(value, 0)
 }

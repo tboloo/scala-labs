@@ -41,7 +41,7 @@ public class ImperativeSample {
 	 * 1. filter out all adults of the list of persons
 	 * 2. sort the list by name
 	 * 3. group each person by their age group, e.g. 30 -> List<duke, jeniffer>
-	 * @return grouped adults
+	 * @return grouped adults sorted by age
 	 */
 	public static Map<Integer, List<Person>> groupAdultsPerAgeGroup(List<Person> persons) {
 
