@@ -14,6 +14,14 @@ abstract class TwitterUser {
     val friendsCount: Int
     val followersCount : Int
     val statusesCount : Int
+
+    override def equals(other: Any): Boolean = other match {
+        case that: TwitterUser => that.id == id
+        case _ => false
+    }
+    override def hashCode: Int = {
+        name hashCode
+    }
 }
 
 object TwitterUser {
